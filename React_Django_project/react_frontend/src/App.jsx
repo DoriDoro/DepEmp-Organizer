@@ -3,8 +3,8 @@ import React from 'react';
 import './App.css';
 
 import Home from './Components/Home';
-import Department from './Components/Department';
-import Employee from './Components/Employee';
+import Department from './Components/Department/Department';
+import Employee from './Components/Employee/Employee';
 import Navigation from './Components/Navigation';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

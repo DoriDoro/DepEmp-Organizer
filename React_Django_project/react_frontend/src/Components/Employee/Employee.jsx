@@ -3,8 +3,8 @@ import { Table } from 'react-bootstrap';
 
 import { Button, ButtonToolbar } from 'react-bootstrap';
 
-import AddEmployee from './Employee/AddEmployee';
-import EditEmployee from './Employee/EditEmployee';
+import AddEmployee from './AddEmployee';
+import EditEmployee from './EditEmployee';
 
 
 export default class Employee extends React.Component {
@@ -25,23 +25,20 @@ export default class Employee extends React.Component {
 		this.refreshList();
 	}
 
-	componentDidUpdate() {
-		this.refreshList();
-	}
-
 	deleteEmployee(employeeid) {
 		if(window.confirm('Are you sure?')) {
 			fetch(process.env.REACT_APP_API+'employee/'+employeeid, {
 				method:'DELETE',
 				header:{'Accept': 'application/json', 'Content-Type': 'application/json'}
 			})
+			this.refreshList();
 		}
 	}
 
 	render() {
-	const { employees, employeeid, employeename, department, photo, datejoining } = this.state;
-	let addEmployeeClose = () => this.setState({addEmployee:false});
-	let editEmployeeClose = () => this.setState({editEmployee:false});
+	const { employees, employeeid, employeename, department, photofilename, dateofjoining } = this.state;
+	let addEmployeeClose = () => this.setState({addEmployee:false}, this.refreshList());
+	let editEmployeeClose = () => this.setState({editEmployee:false}, this.refreshList());
 
 		return (
 			<div>
@@ -75,8 +72,8 @@ export default class Employee extends React.Component {
 													employeeid:emp.EmployeeId, 
 													employeename:emp.EmployeeName,
 													department:emp.Department,
-													photo:emp.PhotoFileName,
-													datejoining:emp.DateOfJoining})}>
+													photofilename:emp.PhotoFileName,
+													dateofjoining:emp.DateOfJoining})}>
 												Edit
 										</Button>
 
@@ -93,8 +90,8 @@ export default class Employee extends React.Component {
 											employeeid={employeeid}
 											employeename={employeename}
 											department={department}
-											photo={photo}
-											datejoining={datejoining} />
+											photofilename={photofilename}
+											dateofjoining={dateofjoining} />
 									</ButtonToolbar>
 								</td>
 							</tr>)}

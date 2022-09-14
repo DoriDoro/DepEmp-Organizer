@@ -2,8 +2,8 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 import { Button, ButtonToolbar } from 'react-bootstrap';
-import AddDepartment from './Department/AddDepartment';
-import EditDepartment from './Department/EditDepartment';
+import AddDepartment from './AddDepartment';
+import EditDepartment from './EditDepartment';
 
 
 export default class Department extends React.Component {
@@ -24,16 +24,13 @@ export default class Department extends React.Component {
 		this.refreshList();
 	}
 
-	componentDidUpdate() {
-		this.refreshList();
-	}
-
 	deleteDepartment(departmentid) {
 		if(window.confirm('Are you sure?')) {
 			fetch(process.env.REACT_APP_API+'department/'+departmentid, {
 				method:'DELETE',
 				header:{'Accept': 'application/json', 'Content-Type': 'application/json'}
 			})
+			this.refreshList()
 		}
 	}
 

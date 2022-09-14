@@ -5,7 +5,16 @@ import { Modal, Button, Row, Col, Form, Image } from 'react-bootstrap';
 export default class EditEmployee extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state={departments:[]}
 		this.handleSubmit=this.handleSubmit.bind(this);
+	}
+
+	componentDidMount() {
+		fetch(process.env.REACT_APP_API+'department/')
+		.then(response => response.json())
+		.then(data => {
+			this.setState({departments:data});
+		});
 	}
 
 	handleSubmit(event) {
@@ -17,11 +26,11 @@ export default class EditEmployee extends React.Component {
 				'Content-Type': 'application/json'
 			},
 			body:JSON.stringify({
-				EmployeeId:event.target.EmployeeID.value,
+				EmployeeId:event.target.EmployeeId.value,
 				EmployeeName:event.target.EmployeeName.value,
 				Department:event.target.Department.value,
 				DateOfJoining:event.target.DateOfJoining.value,
-				PhotoFileName:this.photo
+				PhotoFileName:this.photofilename
 			})
 		})
 		.then(res => res.json())
@@ -76,15 +85,12 @@ export default class EditEmployee extends React.Component {
 
 									<Form.Group controlId="Department">
 										<Form.Label>Department</Form.Label>
-										<Form.Control 
-											as="select"
-											defaultValue = {this.props.department}
-										>
-												{this.state.departments.map(dep =>
-													<option key={dep.DepartmentId} >
-														{dep.DepartmentName}
-													</option>
-												)}
+										<Form.Control as="select">
+											{this.state.departments.map((dep) =>
+												<option key={dep.DepartmentId} >
+													{dep.DepartmentName}
+												</option>
+											)};
 										</Form.Control>
 									</Form.Group>
 
@@ -94,7 +100,7 @@ export default class EditEmployee extends React.Component {
 											type="date"
 											name="DateOfJoining"
 											required
-											defaultValue = {this.props.datejoining}
+											defaultValue = {this.props.dateofjoining}
 											placeholder="Joining Date"
 										/>
 									</Form.Group>
@@ -113,7 +119,7 @@ export default class EditEmployee extends React.Component {
 								<Image 
 									width="200px"
 									height="200px"
-									src={process.env.REACT_APP_PHOTOPATH+this.props.photo} 
+									src={process.env.REACT_APP_PHOTOPATH+this.props.photofilename} 
 								/>
 								<input onChange={this.handleFileSelected} type="File" />
 							</Col>

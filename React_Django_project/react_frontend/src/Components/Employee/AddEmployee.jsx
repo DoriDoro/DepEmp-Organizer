@@ -11,17 +11,16 @@ export default class AddEmployee extends React.Component {
 		this.handleFileSelected=this.handleFileSelected.bind(this);
 	}
 
-	photo = 'book.png';
-	imagesrc = process.env.REACT_APP_PHOTOPATH+this.photo;
+	photofilename = 'book.png';
+	imagesrc = process.env.REACT_APP_PHOTOPATH+this.photofilename;
 
 	componentDidMount() {
-		fetch(process.env.REACT_APP_API+'employee/')
+		fetch(process.env.REACT_APP_API+'department/')
 		.then(response => response.json())
 		.then(data => {
 			this.setState({departments:data});
 		});
 	}
-
 
 	handleSubmit(event) {
 		event.preventDefault();
@@ -36,7 +35,7 @@ export default class AddEmployee extends React.Component {
 				EmployeeName:event.target.EmployeeName.value,
 				Department:event.target.Department.value,
 				DateOfJoining:event.target.DateOfJoining.value,
-				PhotoFileName:this.photo
+				PhotoFileName:this.photofilename
 			})
 		})
 		.then(res => res.json())
@@ -50,7 +49,7 @@ export default class AddEmployee extends React.Component {
 
 	handleFileSelected(event) {
 		event.preventDefault();
-		this.photo=event.target.files[0].name;
+		this.photofilename=event.target.files[0].name;
 		const formData = new FormData();
 		formData.append(
 			"myFile",
@@ -58,7 +57,7 @@ export default class AddEmployee extends React.Component {
 			event.target.files[0].name
 		);
 
-		fetch(process.env.REACT_APP_API+'employee/SaveFile', {
+		fetch(process.env.REACT_APP_API+'employee/saveFile', {
 			method:'POST',
 			body:formData
 		})
@@ -103,11 +102,11 @@ export default class AddEmployee extends React.Component {
 									<Form.Group controlId="Department">
 										<Form.Label>Department</Form.Label>
 										<Form.Control as="select">
-											{this.state.departments.map(dep =>
+											{this.state.departments.map((dep) =>
 												<option key={dep.DepartmentId} >
 													{dep.DepartmentName}
 												</option>
-												)}
+											)};
 										</Form.Control>
 									</Form.Group>
 
